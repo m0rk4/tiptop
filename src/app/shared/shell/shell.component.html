@@ -29,13 +29,20 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
-      <span class="logo" routerLink="/">Tiptop</span>
+      <div class="logo" routerLink="/">
+        <mat-icon aria-hidden="false" aria-label="Home icon" class="icon"
+          >home</mat-icon
+        >
+        Tiptop
+      </div>
 
       <span class="fill-space"></span>
 
       <div *ngIf="(isHandset$ | async) === false">
-        <a mat-button routerLink="/login">Login</a>
-        <a mat-button routerLink="/kanban">Kanban</a>
+        <a mat-button routerLink="/login"><mat-icon>vpn_key</mat-icon> Login</a>
+        <a mat-button routerLink="/kanban"
+          ><mat-icon>developer_board</mat-icon> Kanban</a
+        >
         <a mat-button routerLink="/customers">SSR</a>
       </div>
     </mat-toolbar>
