@@ -27,7 +27,7 @@ export class BoardService {
   /**
    * Delete board
    */
-  deleteBoard(boardId: string) {
+  deleteBoard(boardId?: string) {
     return this.db.collection('boards').doc(boardId).delete();
   }
 

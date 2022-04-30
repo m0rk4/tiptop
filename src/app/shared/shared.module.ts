@@ -13,8 +13,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ShellComponent } from './shell/shell.component';
+import { DeleteButtonComponent } from './delete-button/delete-button.component';
 
-const components = [ShellComponent];
+const components = [ShellComponent, DeleteButtonComponent];
 
 const modules = [
   CommonModule,
