@@ -11,6 +11,7 @@ import { BoardListComponent } from './board-list/board-list.component';
 import { BoardComponent } from './board/board.component';
 import { BoardDialogComponent } from './dialogs/board-dialog.component';
 import { TaskDialogComponent } from './dialogs/task-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TaskDialogComponent } from './dialogs/task-dialog.component';
     DragDropModule,
     MatDialogModule,
     MatButtonToggleModule,
+    MatProgressSpinnerModule,
   ],
   entryComponents: [BoardDialogComponent, TaskDialogComponent],
 })

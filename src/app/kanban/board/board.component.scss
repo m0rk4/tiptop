@@ -15,6 +15,10 @@
   transition: transform 300ms ease;
 }
 
+.tasks {
+  min-height: 3rem;
+}
+
 .tasks.cdk-drop-list-dragging .cdk-drag {
   transition: transform 300ms ease;
 }

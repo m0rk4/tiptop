@@ -3,7 +3,7 @@ import { Board } from '../board.model';
 import { BoardService } from '../board.service';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { BoardDialogComponent } from '../dialogs/board-dialog.component';
 
 @Component({
@@ -30,6 +30,10 @@ export class BoardListComponent implements OnInit, OnDestroy {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.boards, event.previousIndex, event.currentIndex);
     this.boardService.sortBoards(this.boards);
+  }
+
+  trackBoard(index: number, board: Board | undefined) {
+    return board?.id;
   }
 
   openBoardDialog(): void {

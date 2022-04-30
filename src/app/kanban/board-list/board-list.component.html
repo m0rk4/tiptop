@@ -5,9 +5,15 @@
   cdkDropListOrientation="horizontal"
   (cdkDropListDropped)="drop($event)"
 >
-  <app-board cdkDrag *ngFor="let board of boards" [board]="board">
+  <app-board
+    cdkDrag
+    *ngFor="let board of boards; trackBy: trackBoard"
+    [board]="board"
+  >
     <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
   </app-board>
+
+  <mat-spinner class="spinner" *ngIf="boards.length === 0"></mat-spinner>
 
   <div class="board-button">
     <button
