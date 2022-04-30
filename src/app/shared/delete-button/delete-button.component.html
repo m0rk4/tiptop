@@ -4,7 +4,7 @@
   (click)="canDelete ? deleteBoard() : prepareForDelete()"
 >
   <mat-icon>delete</mat-icon>
-  <span *ngIf="canDelete">confirm</span>
+  <span *ngIf="canDelete">Sure?</span>
 </button>
 
-<button *ngIf="canDelete" mat-button (click)="cancel()">Cancel</button>
+<button *ngIf="canDelete" mat-button (click)="cancel()">No</button>

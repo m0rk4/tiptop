@@ -13,6 +13,7 @@
     class="tasks"
     cdkDropList
     cdkDropListOrientation="vertical"
+    [cdkDropListData]="board"
     (cdkDropListDropped)="taskDrop($event)"
   >
     <div

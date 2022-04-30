@@ -1,7 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Board, Task } from '../board.model';
 import { BoardService } from '../board.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../dialogs/task-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -15,12 +19,26 @@ export class BoardComponent {
 
   constructor(private boardService: BoardService, private dialog: MatDialog) {}
 
-  taskDrop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(
-      this.board?.tasks ?? [],
-      event.previousIndex,
-      event.currentIndex
-    );
+  taskDrop(event: CdkDragDrop<Board | undefined>) {
+    if (BoardComponent.isDroppedFromSameContainer(event)) {
+      moveItemInArray(
+        this.board?.tasks ?? [],
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data?.tasks ?? [],
+        event.container.data?.tasks ?? [],
+        event.previousIndex,
+        event.currentIndex
+      );
+      const previousBoard = event.previousContainer.data;
+      this.boardService.updateTasks(
+        previousBoard?.id,
+        previousBoard?.tasks ?? []
+      );
+    }
     this.boardService.updateTasks(this.board?.id, this.board?.tasks ?? []);
   }
 
@@ -54,5 +72,9 @@ export class BoardComponent {
 
   handleDelete() {
     this.boardService.deleteBoard(this.board?.id);
+  }
+
+  private static isDroppedFromSameContainer<T>(event: CdkDragDrop<T>) {
+    return event.container === event.previousContainer;
   }
 }

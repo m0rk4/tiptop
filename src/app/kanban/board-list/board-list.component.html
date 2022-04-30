@@ -1,7 +1,8 @@
 <div
-  cdkDropList
-  cdkDropListOrientation="horizontal"
   class="boards"
+  cdkDropList
+  cdkDropListGroup
+  cdkDropListOrientation="horizontal"
   (cdkDropListDropped)="drop($event)"
 >
   <app-board cdkDrag *ngFor="let board of boards" [board]="board">

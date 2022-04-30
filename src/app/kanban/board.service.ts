@@ -38,7 +38,7 @@ export class BoardService {
     return this.db.collection('boards').doc(boardId).update({ tasks });
   }
 
-  removeTask(boardId: string, task: Task) {
+  removeTask(boardId?: string, task?: Task) {
     return this.db
       .collection('boards')
       .doc(boardId)
