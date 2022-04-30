@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Board, Task } from './board.model';
-import firebase from 'firebase/compat';
 import { switchMap } from 'rxjs';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class BoardService {
     return this.db.collection('boards').add({
       ...data,
       uid: user?.uid,
-      tasks: [{ description: 'Hello!', label: 'yellow' }],
+      tasks: [],
     });
   }
 
@@ -51,7 +52,7 @@ export class BoardService {
       switchMap((user) => {
         if (user) {
           return this.db
-            .collection<Board>('board', (ref) =>
+            .collection<Board>('boards', (ref) =>
               ref.where('uid', '==', user.uid).orderBy('priority')
             )
             .valueChanges({ idField: 'id' });
