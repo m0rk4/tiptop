@@ -11,7 +11,7 @@ import { map, shareReplay } from 'rxjs';
 export class ShellComponent {
   isHandset$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
     map((result) => result.matches),
-    shareReplay(1)
+    shareReplay()
   );
 
   constructor(private breakpointObserver: BreakpointObserver) {}
