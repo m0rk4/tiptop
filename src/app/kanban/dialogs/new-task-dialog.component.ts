@@ -22,7 +22,12 @@ import { Component } from '@angular/core';
       </mat-button-toggle-group>
     </div>
     <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{name, label}" cdkFocusInitial>
+      <button
+        mat-button
+        [disabled]="!name"
+        [mat-dialog-close]="{name, label}"
+        cdkFocusInitial
+      >
         Add Task
       </button>
     </div>
