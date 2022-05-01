@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+.hidden.hidden {
+  display: none;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+
+  .grow-wrap {
+    display: grid;
+  }
+
+  .grow-wrap::after {
+    content: attr(data-replicated-value) ' ';
+    white-space: pre-wrap;
+    visibility: hidden;
+  }
+
+  .grow-wrap > textarea,
+  .grow-wrap::after {
+    font: inherit;
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .grow-wrap > textarea {
+    resize: none;
+    overflow: hidden;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  .editor-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+
+  .markdown {
+    display: block;
+    min-height: 1rem;
+  }
+}

@@ -6,6 +6,11 @@ export interface Board {
 }
 
 export interface Task {
+  id?: string;
+  priority?: number;
+  name?: string;
   description?: string;
-  label?: 'purple' | 'blue' | 'green' | 'yellow' | 'red' | 'gray';
+  label?: Color;
 }
+
+export type Color = 'purple' | 'blue' | 'green' | 'yellow' | 'red' | 'gray';

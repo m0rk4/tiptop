@@ -1,0 +1,33 @@
+<div class="editor" [class.hidden]="!isEditing">
+  <mat-form-field appearance="fill">
+    <div class="grow-wrap">
+      <textarea
+        class="textarea"
+        placeholder="Add some description"
+        matInput
+        onInput="this.parentNode.dataset.replicatedValue = this.value"
+        [(ngModel)]="current"
+      >
+      </textarea>
+    </div>
+  </mat-form-field>
+  <div class="editor-actions">
+    <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+    <button
+      mat-icon-button
+      aria-label="Cancel editing description"
+      (click)="onCancel()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="preview" [class.hidden]="isEditing">
+  <markdown
+    emoji
+    class="markdown"
+    [data]="_description"
+    (click)="toggleState()"
+  >
+  </markdown>
+</div>

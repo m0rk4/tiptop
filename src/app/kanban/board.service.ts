@@ -31,23 +31,59 @@ export class BoardService {
     return this.db.collection('boards').doc(boardId).delete();
   }
 
+  addTask(boardId: string | undefined, task: Task) {
+    this.db.collection('boards').doc(boardId).collection('tasks').add(task);
+  }
+
+  transferTask(
+    oldBoardId?: string,
+    newBoardId?: string,
+    oldTasks: Task[] = [],
+    newTasks: Task[] = [],
+    oldTaskId?: string
+  ) {
+    const db = firebase.firestore();
+    const batch = db.batch();
+
+    const oldTaskRef = db
+      .collection('boards')
+      .doc(oldBoardId)
+      .collection('tasks')
+      .doc(oldTaskId);
+    batch.delete(oldTaskRef);
+
+    const oldRefs = oldTasks.map((t) =>
+      db.collection('boards').doc(oldBoardId).collection('tasks').doc(t.id)
+    );
+    const newRefs = newTasks.map((t) =>
+      db.collection('boards').doc(newBoardId).collection('tasks').doc(t.id)
+    );
+
+    oldRefs.forEach((ref, idx) =>
+      batch.set(ref, { ...oldTasks[idx], priority: idx })
+    );
+    newRefs.forEach((ref, idx) =>
+      batch.set(ref, { ...newTasks[idx], priority: idx })
+    );
+    batch.commit();
+  }
+
   /**
    * Update the tasks on board
    */
-  updateTasks(boardId: string | undefined, tasks: Task[]) {
-    return this.db.collection('boards').doc(boardId).update({ tasks });
+  rearrangeTasks(boardId: string | undefined, tasks: Task[]) {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const refs = tasks.map((t) =>
+      db.collection('boards').doc(boardId).collection('tasks').doc(t.id)
+    );
+    refs.forEach((ref, idx) =>
+      batch.set(ref, { ...tasks[idx], priority: idx })
+    );
+    batch.commit();
   }
 
-  removeTask(boardId?: string, task?: Task) {
-    return this.db
-      .collection('boards')
-      .doc(boardId)
-      .update({
-        tasks: firebase.firestore.FieldValue.arrayRemove(task),
-      });
-  }
-
-  getUserBoards() {
+  userBoards() {
     return this.afAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
@@ -72,5 +108,13 @@ export class BoardService {
     const refs = boards.map((b) => db.collection('boards').doc(b.id));
     refs.forEach((ref, idx) => batch.update(ref, { priority: idx }));
     batch.commit();
+  }
+
+  getBoardTasks(boardId?: string) {
+    return this.db
+      .collection<Board>('boards')
+      .doc(boardId)
+      .collection<Task>('tasks', (ref) => ref.orderBy('priority'))
+      .valueChanges({ idField: 'id' });
   }
 }

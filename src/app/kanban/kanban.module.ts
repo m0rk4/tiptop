@@ -10,15 +10,20 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BoardListComponent } from './board-list/board-list.component';
 import { BoardComponent } from './board/board.component';
 import { BoardDialogComponent } from './dialogs/board-dialog.component';
-import { TaskDialogComponent } from './dialogs/task-dialog.component';
+import { NewTaskDialogComponent } from './dialogs/new-task-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TaskDialogComponent } from './dialogs/task-dialog/task-dialog.component';
+import { MdEditorComponent } from './md-editor/md-editor.component';
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
     BoardListComponent,
     BoardComponent,
     BoardDialogComponent,
+    NewTaskDialogComponent,
     TaskDialogComponent,
+    MdEditorComponent,
   ],
   imports: [
     CommonModule,
@@ -29,7 +34,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {
+          gfm: true,
+          breaks: true,
+          pedantic: false,
+          smartLists: true,
+          smartypants: false,
+        },
+      },
+    }),
   ],
-  entryComponents: [BoardDialogComponent, TaskDialogComponent],
+  entryComponents: [
+    BoardDialogComponent,
+    NewTaskDialogComponent,
+    TaskDialogComponent,
+  ],
 })
 export class KanbanModule {}

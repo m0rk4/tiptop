@@ -1,30 +1,26 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-board-dialog',
   template: `
     <h1 mat-dialog-title>Board</h1>
-    <div mat-dialog-content>
+    <mat-dialog-content>
       <p>What shall we call this board?</p>
       <mat-form-field>
-        <input placeholder="title" matInput [(ngModel)]="data.title" />
+        <input placeholder="title" matInput [(ngModel)]="name" />
       </mat-form-field>
-    </div>
-    <div mat-dialog-actions>
+    </mat-dialog-content>
+    <mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button [mat-dialog-close]="data.title" cdkFocusInitial>
-        Create
-      </button>
-    </div>
+      <button mat-button [mat-dialog-close]="name">Create</button>
+    </mat-dialog-actions>
   `,
-  styles: [],
 })
 export class BoardDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<BoardDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  name = '';
+
+  constructor(private dialogRef: MatDialogRef<BoardDialogComponent>) {}
 
   onNoClick() {
     this.dialogRef.close();

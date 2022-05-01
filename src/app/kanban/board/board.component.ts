@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Board, Task } from '../board.model';
 import { BoardService } from '../board.service';
 import {
@@ -6,72 +6,92 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { TaskDialogComponent } from '../dialogs/task-dialog.component';
+import { NewTaskDialogComponent } from '../dialogs/new-task-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TaskDialogComponent } from '../dialogs/task-dialog/task-dialog.component';
+import { BehaviorSubject, filter, Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardComponent {
-  @Input() board: Board | undefined;
+  board$: Observable<Board | null>;
+  tasks$: Observable<Task[]> | undefined;
 
-  constructor(private boardService: BoardService, private dialog: MatDialog) {}
+  private _board$ = new BehaviorSubject<Board | null>(null);
 
-  taskDrop(event: CdkDragDrop<Board | undefined>) {
+  @Input() set board(board: Board) {
+    this._board$.next(board);
+  }
+
+  constructor(private boardService: BoardService, private dialog: MatDialog) {
+    this.board$ = this._board$;
+    this.tasks$ = this.board$.pipe(
+      filter((board) => !!board),
+      switchMap((board) => this.boardService.getBoardTasks(board?.id))
+    );
+  }
+
+  taskDrop(event: CdkDragDrop<{ board: Board; tasks: Task[] }>) {
+    const { board: currentBoard, tasks: currentBoardTasks } =
+      event.container.data;
+    const { board: previousBoard, tasks: previousBoardTasks } =
+      event.previousContainer.data;
     if (BoardComponent.isDroppedFromSameContainer(event)) {
       moveItemInArray(
-        this.board?.tasks ?? [],
+        currentBoardTasks,
         event.previousIndex,
         event.currentIndex
       );
-    } else {
-      transferArrayItem(
-        event.previousContainer.data?.tasks ?? [],
-        event.container.data?.tasks ?? [],
-        event.previousIndex,
-        event.currentIndex
-      );
-      const previousBoard = event.previousContainer.data;
-      this.boardService.updateTasks(
-        previousBoard?.id,
-        previousBoard?.tasks ?? []
-      );
+      this.boardService.rearrangeTasks(currentBoard?.id, currentBoardTasks);
+      return;
     }
-    this.boardService.updateTasks(this.board?.id, this.board?.tasks ?? []);
+
+    const oldTaskId = previousBoardTasks[event.previousIndex];
+    transferArrayItem(
+      previousBoardTasks,
+      currentBoardTasks,
+      event.previousIndex,
+      event.currentIndex
+    );
+    this.boardService.transferTask(
+      previousBoard.id,
+      currentBoard.id,
+      previousBoardTasks,
+      currentBoardTasks,
+      oldTaskId?.id
+    );
   }
 
-  openDialog(task?: Task, idx?: number): void {
-    const newTask = { label: 'purple' };
+  trackTask(index: number, task: Task) {
+    return task.id;
+  }
+
+  openTaskDialog() {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
-      width: '500px',
-      data: task
-        ? { task: { ...task }, isNew: false, boardId: this.board?.id, idx }
-        : { task: newTask, isNew: true },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        if (result.isNew) {
-          this.boardService.updateTasks(this.board?.id, [
-            ...(this.board?.tasks ?? []),
-            result.task,
-          ]);
-        } else {
-          const update = this.board?.tasks ?? [];
-          update.splice(result.idx, 1, result.task);
-          this.boardService.updateTasks(
-            this.board?.id,
-            this.board?.tasks ?? []
-          );
-        }
-      }
+      width: '1000px',
     });
   }
 
-  handleDelete() {
-    this.boardService.deleteBoard(this.board?.id);
+  openDialog(boardId?: string, tasks?: Task[]): void {
+    this.dialog
+      .open(NewTaskDialogComponent, { width: '500px' })
+      .afterClosed()
+      .subscribe((result?: Task) => {
+        if (result) {
+          this.boardService.rearrangeTasks(boardId, [
+            ...(tasks ?? []),
+            { label: result.label, name: result.name, priority: tasks?.length },
+          ]);
+        }
+      });
+  }
+
+  handleDelete(boardId?: string) {
+    this.boardService.deleteBoard(boardId);
   }
 
   private static isDroppedFromSameContainer<T>(event: CdkDragDrop<T>) {

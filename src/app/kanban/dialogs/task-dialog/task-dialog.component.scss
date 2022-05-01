@@ -1,0 +1,27 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+
+  .main-content {
+    grid-column: 1 / 10;
+
+    .description-title {
+      font-size: 1rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .editor {
+      margin-left: 2rem;
+    }
+  }
+
+  .sidenav {
+    grid-column: 11 / 13;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

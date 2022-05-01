@@ -1,36 +1,37 @@
-<mat-card class="outer-card">
-  <mat-card-header>
-    <ng-content></ng-content>
-    <mat-card-title>
-      {{ board?.title }}
-    </mat-card-title>
-    <mat-card-subtitle>
-      {{ board?.id }}
-    </mat-card-subtitle>
-  </mat-card-header>
+<ng-container *ngIf="board$ | async as board">
+  <mat-card class="outer-card">
+    <mat-card-header class="board-list-header">
+      <ng-content></ng-content>
+      <mat-card-title>
+        {{ board.title }}
+      </mat-card-title>
+    </mat-card-header>
 
-  <div
-    class="tasks"
-    cdkDropList
-    cdkDropListOrientation="vertical"
-    [cdkDropListData]="board"
-    (cdkDropListDropped)="taskDrop($event)"
-  >
-    <div
-      class="inner-card"
-      cdkDrag
-      *ngFor="let task of board?.tasks ?? []; let i = index"
-      (click)="openDialog(task, i)"
-    >
-      <mat-card [ngClass]="task?.label ?? ''">
-        {{ task?.description }}
-      </mat-card>
-    </div>
-  </div>
+    <ng-container *ngIf="tasks$ | async as tasks">
+      <div
+        class="tasks"
+        cdkDropList
+        cdkDropListOrientation="vertical"
+        [cdkDropListData]="{board, tasks}"
+        (cdkDropListDropped)="taskDrop($event)"
+      >
+        <div
+          class="inner-card"
+          cdkDrag
+          *ngFor="let task of tasks; trackBy: trackTask; let i = index"
+          (click)="openTaskDialog()"
+        >
+          <mat-card [ngClass]="task.label ?? 'gray'">
+            {{ task.name }}
+          </mat-card>
+        </div>
+      </div>
 
-  <button mat-stroked-button (click)="openDialog()">
-    <mat-icon>add</mat-icon>
-  </button>
+      <button mat-stroked-button (click)="openDialog(board.id, tasks)">
+        <mat-icon>add</mat-icon>
+      </button>
 
-  <app-delete-button (delete)="handleDelete()"></app-delete-button>
-</mat-card>
+      <app-delete-button (delete)="handleDelete(board.id)"></app-delete-button>
+    </ng-container>
+  </mat-card>
+</ng-container>
