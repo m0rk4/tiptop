@@ -5,15 +5,17 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'app-board-dialog',
   template: `
     <h1 mat-dialog-title>Board</h1>
-    <mat-dialog-content>
+    <div mat-dialog-content>
       <p>What shall we call this board?</p>
       <mat-form-field>
         <input placeholder="title" matInput [(ngModel)]="name" />
       </mat-form-field>
-    </mat-dialog-content>
+    </div>
     <mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button [mat-dialog-close]="name">Create</button>
+      <button mat-button [disabled]="!name" [mat-dialog-close]="name">
+        Create
+      </button>
     </mat-dialog-actions>
   `,
 })

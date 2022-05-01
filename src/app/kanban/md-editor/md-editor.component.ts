@@ -16,11 +16,7 @@ export class MdEditorComponent {
   current = '';
   _description = '';
 
-  isEditing = true;
-
-  toggleState() {
-    this.isEditing = !this.isEditing;
-  }
+  isEditing = false;
 
   onSave() {
     this._description = this.current;

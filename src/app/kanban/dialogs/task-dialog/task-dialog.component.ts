@@ -14,5 +14,11 @@ export class TaskDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  onSaveDescription(newDescription: string) {}
+  onSaveDescription(newDescription: string) {
+    this.boardService.updateTaskDescription(
+      newDescription,
+      this.data.board.id,
+      this.data.task.id
+    );
+  }
 }

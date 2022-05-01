@@ -10,23 +10,7 @@
   display: flex;
   flex-direction: column;
 
-  .grow-wrap {
-    display: grid;
-  }
-
-  .grow-wrap::after {
-    content: attr(data-replicated-value) ' ';
-    white-space: pre-wrap;
-    visibility: hidden;
-  }
-
-  .grow-wrap > textarea,
-  .grow-wrap::after {
-    font: inherit;
-    grid-area: 1 / 1 / 2 / 2;
-  }
-
-  .grow-wrap > textarea {
+  .textarea {
     resize: none;
     overflow: hidden;
     white-space: pre-wrap;
@@ -43,6 +27,17 @@
 .preview {
   display: flex;
   flex-direction: column;
+
+  .placeholder {
+    background-color: gray;
+    border: none;
+    border-radius: 3px;
+    box-shadow: none;
+    display: block;
+    min-height: 40px;
+    padding: 8px 12px;
+    text-decoration: none;
+  }
 
   .markdown {
     display: block;

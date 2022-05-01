@@ -70,9 +70,10 @@ export class BoardComponent {
     return task.id;
   }
 
-  openTaskDialog() {
-    const dialogRef = this.dialog.open(TaskDialogComponent, {
-      width: '1000px',
+  openTaskDialog(task: Task, board: Board) {
+    this.dialog.open(TaskDialogComponent, {
+      width: '500px',
+      data: { task, board },
     });
   }
 

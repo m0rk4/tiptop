@@ -1,4 +1,4 @@
-<ng-container *ngIf="boards$ | async as boards">
+<ng-container *ngIf="boards$ | async as boards; else loading">
   <div
     class="boards"
     cdkDropList
@@ -27,3 +27,6 @@
     </div>
   </div>
 </ng-container>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

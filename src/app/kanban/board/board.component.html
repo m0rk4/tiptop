@@ -7,7 +7,7 @@
       </mat-card-title>
     </mat-card-header>
 
-    <ng-container *ngIf="tasks$ | async as tasks">
+    <ng-container *ngIf="tasks$ | async as tasks; else loading">
       <div
         class="tasks"
         cdkDropList
@@ -19,7 +19,7 @@
           class="inner-card"
           cdkDrag
           *ngFor="let task of tasks; trackBy: trackTask; let i = index"
-          (click)="openTaskDialog()"
+          (click)="openTaskDialog(task, board)"
         >
           <mat-card [ngClass]="task.label ?? 'gray'">
             {{ task.name }}
@@ -33,5 +33,9 @@
 
       <app-delete-button (delete)="handleDelete(board.id)"></app-delete-button>
     </ng-container>
+
+    <ng-template #loading>
+      <mat-spinner></mat-spinner>
+    </ng-template>
   </mat-card>
 </ng-container>

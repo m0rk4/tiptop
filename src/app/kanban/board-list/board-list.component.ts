@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Board } from '../board.model';
 import { BoardService } from '../board.service';
-import { Observable } from 'rxjs';
+import { filter, from, Observable, switchMap } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardDialogComponent } from '../dialogs/board-dialog.component';
@@ -33,11 +33,17 @@ export class BoardListComponent {
     this.dialog
       .open(BoardDialogComponent, { width: '400px' })
       .afterClosed()
-      .subscribe((result) => {
-        this.boardService.createBoard({
-          title: result,
-          priority: boards.length,
-        });
-      });
+      .pipe(
+        filter((result) => !!result),
+        switchMap((result) =>
+          from(
+            this.boardService.createBoard({
+              title: result,
+              priority: boards.length,
+            })
+          )
+        )
+      )
+      .subscribe();
   }
 }

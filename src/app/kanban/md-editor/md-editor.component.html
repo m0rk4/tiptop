@@ -1,15 +1,12 @@
 <div class="editor" [class.hidden]="!isEditing">
   <mat-form-field appearance="fill">
-    <div class="grow-wrap">
-      <textarea
-        class="textarea"
-        placeholder="Add some description"
-        matInput
-        onInput="this.parentNode.dataset.replicatedValue = this.value"
-        [(ngModel)]="current"
-      >
-      </textarea>
-    </div>
+    <textarea
+      matInput
+      class="textarea"
+      placeholder="Add description..."
+      cdkTextareaAutosize="true"
+      [(ngModel)]="current"
+    ></textarea>
   </mat-form-field>
   <div class="editor-actions">
     <button mat-raised-button color="primary" (click)="onSave()">Save</button>
@@ -26,8 +23,14 @@
   <markdown
     emoji
     class="markdown"
+    *ngIf="_description; else placeholder"
     [data]="_description"
-    (click)="toggleState()"
+    (click)="isEditing = !isEditing"
   >
   </markdown>
+  <ng-template #placeholder>
+    <div class="placeholder" (click)="isEditing = !isEditing">
+      Add description...
+    </div>
+  </ng-template>
 </div>

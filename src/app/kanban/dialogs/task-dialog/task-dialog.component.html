@@ -1,10 +1,16 @@
-<h1 mat-dialog-title>Some title</h1>
+<h1 class="header" mat-dialog-title>
+  {{ data.task.name }} <span>(In {{ data.board.title }})</span>
+</h1>
 <mat-dialog-content class="wrapper">
   <div class="main-content">
     <div class="description-title">
-      <mat-icon>description</mat-icon> Description
+      <mat-icon>description</mat-icon> Description <span>(click to edit)</span>
     </div>
-    <app-md-editor class="editor"></app-md-editor>
+    <app-md-editor
+      class="editor"
+      [description]="data.task.description"
+      (save)="onSaveDescription($event)"
+    ></app-md-editor>
   </div>
   <div class="sidenav"></div>
 </mat-dialog-content>

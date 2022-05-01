@@ -20,7 +20,6 @@ export class BoardService {
     return this.db.collection('boards').add({
       ...data,
       uid: user?.uid,
-      tasks: [],
     });
   }
 
@@ -108,6 +107,19 @@ export class BoardService {
     const refs = boards.map((b) => db.collection('boards').doc(b.id));
     refs.forEach((ref, idx) => batch.update(ref, { priority: idx }));
     batch.commit();
+  }
+
+  updateTaskDescription(
+    description: string,
+    boardId?: string,
+    taskId?: string
+  ) {
+    this.db
+      .collection<Board>('boards')
+      .doc(boardId)
+      .collection<Task>('tasks')
+      .doc(taskId)
+      .update({ description });
   }
 
   getBoardTasks(boardId?: string) {

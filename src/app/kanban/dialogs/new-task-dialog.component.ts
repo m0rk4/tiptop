@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
   selector: 'app-new-task-dialog',
   styleUrls: ['./dialog.scss'],
   template: `
-    <h1 mat-dialog-title>New Task</h1>
+    <h1 mat-dialog-title>Task</h1>
     <div mat-dialog-content class="content">
       <mat-form-field>
-        <input matInput placeholder="Task Name" [(ngModel)]="name" />
+        <input matInput placeholder="Name" [(ngModel)]="name" />
       </mat-form-field>
       <br />
       <mat-button-toggle-group
@@ -30,7 +30,6 @@ import { Component } from '@angular/core';
 })
 export class NewTaskDialogComponent {
   readonly labelOptions = ['purple', 'blue', 'green', 'yellow', 'red', 'gray'];
-
   name = '';
   label = 'purple';
 }
