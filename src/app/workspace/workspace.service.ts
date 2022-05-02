@@ -22,4 +22,24 @@ export class WorkspaceService {
       )
     );
   }
+
+  userWorkspaces() {
+    return this.afAuth.authState.pipe(
+      filter((user) => !!user),
+      switchMap((user) =>
+        this.db
+          .collection<Workspace>('workspaces', (ref) =>
+            ref.where('uid', '==', user?.uid)
+          )
+          .valueChanges({ idField: 'id' })
+      )
+    );
+  }
+
+  workspace(workspaceId?: string) {
+    return this.db
+      .collection<Workspace>('workspaces')
+      .doc(workspaceId)
+      .valueChanges();
+  }
 }

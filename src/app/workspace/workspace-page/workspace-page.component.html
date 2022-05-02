@@ -1,6 +1,6 @@
 <h1 class="title">Workspace Page</h1>
 
-<mat-card>
+<mat-card *ngIf="workspaceId$ | async as workspaceId">
   <p>
     This content is server rendered with Angular Universal, NestJS, and Google
     Cloud Run.
@@ -23,7 +23,7 @@
   </button>
 </mat-card>
 
-<mat-card *ngIf="workspace | async as workspace">
+<mat-card *ngIf="workspace$ | async as workspace">
   <mat-card-header>
     <mat-card-title>{{ workspace.name }}</mat-card-title>
     <mat-card-subtitle>Workspace Details</mat-card-subtitle>
