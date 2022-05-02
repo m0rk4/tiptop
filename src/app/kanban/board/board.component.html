@@ -3,8 +3,31 @@
     <mat-card-header class="board-list-header">
       <ng-content></ng-content>
       <mat-card-title>
-        {{ board.title }}
+        <span [class.hidden]="isEditTitle">{{ board.title }}</span>
+        <mat-form-field [class.hidden]="!isEditTitle">
+          <input
+            autocomplete="off"
+            matInput
+            [(ngModel)]="board.title"
+            (keyup.enter)="onSaveTitle(board.id, board.title)"
+            (blur)="onSaveTitle(board.id, board.title)"
+          />
+        </mat-form-field>
       </mat-card-title>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        class="more-title"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onEditTitle()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit title</span>
+        </button>
+      </mat-menu>
     </mat-card-header>
 
     <ng-container *ngIf="tasks$ | async as tasks; else loading">

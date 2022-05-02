@@ -45,6 +45,13 @@
         >
         <a mat-button routerLink="/customers">SSR</a>
       </div>
+      <ng-container *ngIf="avatarUrl$ | async as url">
+        <div
+          class="avatar"
+          mat-card-avatar
+          [style.background-image]="url"
+        ></div>
+      </ng-container>
     </mat-toolbar>
 
     <ng-content></ng-content>

@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BoardService } from '../../board.service';
+import { Color } from '../../board.model';
 
 @Component({
   selector: 'app-task-dialog',
@@ -17,6 +18,14 @@ export class TaskDialogComponent {
   onSaveDescription(newDescription: string) {
     this.boardService.updateTaskDescription(
       newDescription,
+      this.data.board.id,
+      this.data.task.id
+    );
+  }
+
+  changeLabel(label: Color) {
+    this.boardService.updateTaskLabel(
+      label,
       this.data.board.id,
       this.data.task.id
     );

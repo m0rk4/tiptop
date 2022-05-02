@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Color } from '../board.model';
 
 @Component({
   selector: 'app-new-task-dialog',
@@ -7,19 +8,13 @@ import { Component } from '@angular/core';
     <h1 mat-dialog-title>Task</h1>
     <div mat-dialog-content class="content">
       <mat-form-field>
-        <input matInput placeholder="Name" [(ngModel)]="name" />
+        <input autocomplete='off' matInput placeholder="Name" [(ngModel)]="name" />
       </mat-form-field>
       <br />
-      <mat-button-toggle-group
-        #group="matButtonToggleGroup"
-        [(ngModel)]="label"
-      >
-        <mat-button-toggle *ngFor="let opt of labelOptions" [value]="opt">
-          <mat-icon [ngClass]="opt">{{
-            opt === 'gray' ? 'check_circle' : 'lens'
-          }}</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+      <app-color-switcher
+        [initialLabel]="'purple'"
+        (labelChange)="label = $event"
+      ></app-color-switcher>
     </div>
     <div mat-dialog-actions>
       <button
@@ -34,7 +29,6 @@ import { Component } from '@angular/core';
   `,
 })
 export class NewTaskDialogComponent {
-  readonly labelOptions = ['purple', 'blue', 'green', 'yellow', 'red', 'gray'];
   name = '';
-  label = 'purple';
+  label: Color = 'purple';
 }

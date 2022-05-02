@@ -12,5 +12,11 @@
       (save)="onSaveDescription($event)"
     ></app-md-editor>
   </div>
-  <div class="sidenav"></div>
+  <div class="sidenav">
+    <app-color-switcher
+      [initialLabel]="data.task.label"
+      [vertical]="true"
+      (labelChange)="changeLabel($event)"
+    ></app-color-switcher>
+  </div>
 </mat-dialog-content>

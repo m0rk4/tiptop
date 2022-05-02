@@ -14,8 +14,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ShellComponent } from './shell/shell.component';
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
+import { ColorSwitcherComponent } from './color-switcher/color-switcher.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
 
-const components = [ShellComponent, DeleteButtonComponent];
+const components = [
+  ShellComponent,
+  DeleteButtonComponent,
+  ColorSwitcherComponent,
+];
 
 const modules = [
   CommonModule,
@@ -32,6 +39,8 @@ const modules = [
   MatFormFieldModule,
   MatInputModule,
   MatSnackBarModule,
+  MatButtonToggleModule,
+  FormsModule,
 ];
 
 @NgModule({

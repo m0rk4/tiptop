@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map, shareReplay } from 'rxjs';
+import { map, Observable, shareReplay } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-shell',
@@ -14,5 +15,14 @@ export class ShellComponent {
     shareReplay()
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  avatarUrl$: Observable<string | null | undefined>;
+
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private afAuth: AngularFireAuth
+  ) {
+    this.avatarUrl$ = afAuth.authState.pipe(
+      map((it) => `url(${it?.photoURL})`)
+    );
+  }
 }

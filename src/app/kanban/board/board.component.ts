@@ -21,6 +21,8 @@ export class BoardComponent {
   board$: Observable<Board | null>;
   tasks$: Observable<Task[]> | undefined;
 
+  isEditTitle = false;
+
   private _board$ = new BehaviorSubject<Board | null>(null);
 
   @Input() set board(board: Board) {
@@ -93,6 +95,17 @@ export class BoardComponent {
 
   handleDelete(boardId?: string) {
     this.boardService.deleteBoard(boardId);
+  }
+
+  onEditTitle() {
+    this.isEditTitle = true;
+  }
+
+  onSaveTitle(boardId?: string, boardTitle?: string) {
+    if (boardTitle) {
+      this.boardService.updateBoardTitle(boardId, boardTitle);
+      this.isEditTitle = false;
+    }
   }
 
   private static isDroppedFromSameContainer<T>(event: CdkDragDrop<T>) {

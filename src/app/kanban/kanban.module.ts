@@ -6,7 +6,6 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BoardListComponent } from './board-list/board-list.component';
 import { BoardComponent } from './board/board.component';
 import { BoardDialogComponent } from './dialogs/board-dialog.component';
@@ -32,7 +31,6 @@ import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
     FormsModule,
     DragDropModule,
     MatDialogModule,
-    MatButtonToggleModule,
     MatProgressSpinnerModule,
     MarkdownModule.forRoot({
       markedOptions: {

@@ -1,0 +1,15 @@
+<mat-button-toggle-group
+  #group="matButtonToggleGroup"
+  [vertical]="vertical"
+  [(ngModel)]="initialLabel"
+>
+  <mat-button-toggle
+    (change)="labelChange.emit($event.value)"
+    *ngFor="let opt of labelOptions"
+    [value]="opt"
+  >
+    <mat-icon [ngClass]="opt">{{
+      opt === 'gray' ? 'check_circle' : 'lens'
+    }}</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>

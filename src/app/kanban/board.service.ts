@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Board, Task } from './board.model';
+import { Board, Color, Task } from './board.model';
 import { switchMap } from 'rxjs';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
@@ -109,6 +109,10 @@ export class BoardService {
     batch.commit();
   }
 
+  updateBoardTitle(boardId?: string, title?: string) {
+    this.db.collection('boards').doc(boardId).update({ title });
+  }
+
   updateTaskDescription(
     description: string,
     boardId?: string,
@@ -128,5 +132,18 @@ export class BoardService {
       .doc(boardId)
       .collection<Task>('tasks', (ref) => ref.orderBy('priority'))
       .valueChanges({ idField: 'id' });
+  }
+
+  updateTaskLabel(
+    label: Color,
+    boardId: string | undefined,
+    taskId: string | undefined
+  ) {
+    this.db
+      .collection<Board>('boards')
+      .doc(boardId)
+      .collection<Task>('tasks')
+      .doc(taskId)
+      .update({ label });
   }
 }
