@@ -1,3 +1,12 @@
+<button
+  class="back-button"
+  *ngIf="workspaceId$ | async as id"
+  [routerLink]="['/workspace', id]"
+  mat-raised-button
+  color="primary"
+>
+  Back To Workspace
+</button>
 <ng-container *ngIf="boards$ | async as boards; else loading">
   <div
     class="boards"
@@ -15,16 +24,18 @@
       <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
     </app-board>
 
-    <div class="board-button">
-      <button
-        mat-raised-button
-        color="accent"
-        cdkDragDisabled
-        (click)="openBoardDialog(boards)"
-      >
-        New Board
-      </button>
-    </div>
+    <ng-container *ngIf="workspaceId$ | async as workspaceId">
+      <div class="board-button">
+        <button
+          mat-raised-button
+          color="accent"
+          cdkDragDisabled
+          (click)="openBoardDialog(boards, workspaceId)"
+        >
+          New Board
+        </button>
+      </div>
+    </ng-container>
   </div>
 </ng-container>
 <ng-template #loading>

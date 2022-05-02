@@ -12,8 +12,12 @@
     <mat-nav-list>
       <a mat-list-item routerLink="/" (click)="drawer.close()">Home</a>
       <a mat-list-item routerLink="/login" (click)="drawer.close()">Login</a>
-      <a mat-list-item routerLink="/kanban" (click)="drawer.close()">Kanban</a>
-      <a mat-list-item routerLink="/customers" (click)="drawer.close()">SSR</a>
+      <a mat-list-item routerLink="/workspace/create" (click)="drawer.close()"
+        >Create Workspace</a
+      >
+      <a mat-list-item routerLink="/workspace" (click)="drawer.close()"
+        >View Workspaces</a
+      >
     </mat-nav-list>
   </mat-sidenav>
 
@@ -24,7 +28,6 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
@@ -40,18 +43,25 @@
 
       <div *ngIf="(isHandset$ | async) === false">
         <a mat-button routerLink="/login"><mat-icon>vpn_key</mat-icon> Login</a>
-        <a mat-button routerLink="/kanban"
-          ><mat-icon>developer_board</mat-icon> Kanban</a
+        <button
+          mat-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
         >
-        <a mat-button routerLink="/customers">SSR</a>
+          <mat-icon>more_vert</mat-icon>
+          Workspaces
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item routerLink="/workspace/create">
+            <mat-icon>dialpad</mat-icon>
+            <span>Create</span>
+          </button>
+          <button mat-menu-item routerLink="/workspace">
+            <mat-icon>voicemail</mat-icon>
+            <span>View</span>
+          </button>
+        </mat-menu>
       </div>
-      <ng-container *ngIf="avatarUrl$ | async as url">
-        <div
-          class="avatar"
-          mat-card-avatar
-          [style.background-image]="url"
-        ></div>
-      </ng-container>
     </mat-toolbar>
 
     <ng-content></ng-content>

@@ -1,0 +1,14 @@
+<h1 class="title">Workspaces List</h1>
+
+<mat-nav-list role="list">
+  <h3 mat-subheader>Workspaces</h3>
+
+  <mat-list-item
+    *ngFor="let workspace of workspaces | async"
+    [routerLink]="workspace.id"
+    role="listitem"
+  >
+    <mat-icon mat-list-icon>account_box</mat-icon>
+    <div>{{ workspace.name }}</div>
+  </mat-list-item>
+</mat-nav-list>

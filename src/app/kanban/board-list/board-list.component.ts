@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Board } from '../board.model';
 import { BoardService } from '../board.service';
-import { filter, from, Observable, switchMap } from 'rxjs';
+import { filter, from, map, Observable, switchMap } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardDialogComponent } from '../dialogs/board-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-board-list',
@@ -13,10 +14,21 @@ import { BoardDialogComponent } from '../dialogs/board-dialog.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardListComponent {
+  workspaceId$: Observable<string>;
   boards$: Observable<Board[]>;
 
-  constructor(public boardService: BoardService, public dialog: MatDialog) {
-    this.boards$ = this.boardService.userBoards();
+  constructor(
+    private boardService: BoardService,
+    private dialog: MatDialog,
+    private activateRoute: ActivatedRoute
+  ) {
+    this.workspaceId$ = this.activateRoute.params.pipe(
+      filter((params) => !!params['workspaceId']),
+      map((params) => params['workspaceId'])
+    );
+    this.boards$ = this.workspaceId$.pipe(
+      switchMap((workspaceId) => this.boardService.workspaceBoards(workspaceId))
+    );
   }
 
   onBoardDropped(event: CdkDragDrop<Board[]>) {
@@ -29,7 +41,7 @@ export class BoardListComponent {
     return board?.id;
   }
 
-  openBoardDialog(boards: Board[]): void {
+  openBoardDialog(boards: Board[], workspaceId: string): void {
     this.dialog
       .open(BoardDialogComponent, { width: '400px' })
       .afterClosed()
@@ -40,6 +52,7 @@ export class BoardListComponent {
             this.boardService.createBoard({
               title: result,
               priority: boards.length,
+              workspaceId,
             })
           )
         )

@@ -8,7 +8,12 @@ import { Color } from '../board.model';
     <h1 mat-dialog-title>Task</h1>
     <div mat-dialog-content class="content">
       <mat-form-field>
-        <input autocomplete='off' matInput placeholder="Name" [(ngModel)]="name" />
+        <input
+          autocomplete="off"
+          matInput
+          placeholder="Name"
+          [(ngModel)]="name"
+        />
       </mat-form-field>
       <br />
       <app-color-switcher

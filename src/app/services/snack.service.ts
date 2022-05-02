@@ -19,4 +19,10 @@ export class SnackService {
       .pipe(tap((_) => this.router.navigate(['/login'])))
       .subscribe();
   }
+
+  message(message: string) {
+    this.snackBar.open(message, 'OK', {
+      duration: 5000,
+    });
+  }
 }

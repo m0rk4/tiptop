@@ -1,0 +1,61 @@
+<main>
+  <h1 [style.font-weight]="'bold'">Create workspace</h1>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field [color]="name?.valid && 'accent'">
+          <input
+            matInput
+            formControlName="name"
+            placeholder="Name"
+            autocomplete="off"
+          />
+
+          <mat-error *ngIf="name?.invalid">
+            You must enter a valid workspace name
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field [color]="description?.valid && 'accent'">
+          <textarea
+            [style.overflow]="'hidden'"
+            matInput
+            cdkTextareaAutosize
+            formControlName="description"
+            placeholder="Description"
+            autocomplete="off"
+          ></textarea>
+
+          <mat-error *ngIf="description?.invalid">
+            You must enter a valid description
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="image"
+            placeholder="Image URL"
+            autocomplete="off"
+          />
+
+          <mat-error *ngIf="image?.invalid">
+            You must enter a valid image url
+          </mat-error>
+        </mat-form-field>
+
+        <button
+          mat-stroked-button
+          color="accent"
+          type="submit"
+          [disabled]="form?.invalid"
+        >
+          Submit
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-card-footer *ngIf="isLoading$ | async">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+</main>

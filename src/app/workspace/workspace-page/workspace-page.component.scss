@@ -1,0 +1,14 @@
+:host {
+  text-align: center;
+  padding: 24px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+mat-card {
+  max-width: 640px;
+  background-color: #212121;
+  margin: 0 auto 10px;
+}

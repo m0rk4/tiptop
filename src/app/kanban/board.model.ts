@@ -2,6 +2,7 @@ export interface Board {
   id?: string;
   title?: string;
   priority?: number;
+  workspaceId?: string;
   tasks?: Task[];
 }
 

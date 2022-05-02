@@ -15,6 +15,12 @@ const routes: Routes = [
       import('./kanban/kanban.module').then((m) => m.KanbanModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'workspace',
+    loadChildren: () =>
+      import('./workspace/workspace.module').then((m) => m.WorkspaceModule),
+    // canActivate: [AuthGuard],
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
