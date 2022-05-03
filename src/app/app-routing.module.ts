@@ -19,11 +19,15 @@ const routes: Routes = [
     path: 'workspace',
     loadChildren: () =>
       import('./workspace/workspace.module').then((m) => m.WorkspaceModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabledBlocking',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
