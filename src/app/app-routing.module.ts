@@ -19,7 +19,6 @@ const routes: Routes = [
     path: 'workspace',
     loadChildren: () =>
       import('./workspace/workspace.module').then((m) => m.WorkspaceModule),
-    canActivate: [AuthGuard],
   },
 ];
 @NgModule({
