@@ -18,14 +18,14 @@ export class SeoService {
       // Open Graph
       {
         name: 'og:url',
-        content: `https://firestarter.fireship.io${this.router.url}`,
+        content: `https://my-app-9arco.ondigitalocean.app${this.router.url}`,
       },
       { name: 'og:title', content: title },
       { name: 'og:description', content: description },
       { name: 'og:image', content: image },
       // Twitter Card
       { name: 'twitter:card', content: 'summary' },
-      { name: 'twitter:site', content: '@fireship_dev' },
+      { name: 'twitter:site', content: '@morka_cs' },
     ]);
   }
 }
